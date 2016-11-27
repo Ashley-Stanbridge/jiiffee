@@ -78,17 +78,44 @@
 	  function App(props) {
 	    _classCallCheck(this, App);
 	
-	    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+	    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+	
+	    _this.state = { lat: -34.397, lng: 150.644 };
+	    return _this;
 	  }
 	
 	  _createClass(App, [{
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
+	
+	      function success(position) {
+	        console.log('---------->', position);
+	        var lat = position.coords.latitude;
+	        var lng = position.coords.longitude;
+	        console.log('LAT!!!!', lat);
+	        console.log('LNG!!!!', lng);
+	      }
+	
+	      function failed() {
+	        console.log('ERROR');
+	      }
+	
+	      if (navigator.geolocation) {
+	        navigator.geolocation.getCurrentPosition(success, failed);
+	      }
 	      return _react2.default.createElement(
 	        'div',
 	        { style: { height: '100%' } },
 	        'MapMe',
-	        _react2.default.createElement(_google_map2.default, { lat: -34.397, lng: 150.644 })
+	        _react2.default.createElement(
+	          'button',
+	          { onClick: function onClick() {
+	              return _this2.setState({ lat: 40.7128, lng: -74.0059 });
+	            } },
+	          'center!'
+	        ),
+	        _react2.default.createElement(_google_map2.default, { lat: this.state.lat, lng: this.state.lng })
 	      );
 	    }
 	  }]);
@@ -21809,6 +21836,11 @@
 	    key: "shouldComponentUpdate",
 	    value: function shouldComponentUpdate() {
 	      return false;
+	    }
+	  }, {
+	    key: "componentWillReceiveProps",
+	    value: function componentWillReceiveProps(nextProps) {
+	      this.map.panTo({ lat: nextProps.lat, lng: nextProps.lng });
 	    }
 	  }, {
 	    key: "componentDidMount",

@@ -5,6 +5,11 @@ export default class extends Component {
       return false;
     }
 
+
+    componentWillReceiveProps(nextProps) {
+      this.map.panTo({ lat: nextProps.lat, lng: nextProps.lng })
+    }
+
     componentDidMount(){
       this.map = new google.maps.Map(this.refs.map, {
         center: { lat: this.props.lat, lng: this.props.lng },
